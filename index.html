@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>3rd December</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global Reset & No Scroll */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Critical: Disables scrolling */
+            background-color: #050505;
+            cursor: none; /* Hide default cursor */
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* Mesh Overlay for Texture (Background) */
+        .overlay-mesh {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Semi-transparent black gradient over a subtle white dot pattern */
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Hero Container Glow */
+        .hero-glow {
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+
+        /* Custom Cursor Elements */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        .rainbow-particle {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 9998;
+            animation: particle-fade 1s forwards;
+        }
+
+        @keyframes particle-fade {
+            0% {
+                transform: scale(1) translate(-50%, -50%);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(0) translate(-50%, -100%);
+                opacity: 0;
+            }
+        }
+
+        /* Text Styles */
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            letter-spacing: 0.2em;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Play Button Animation */
+        .play-btn {
+            transition: all 0.3s ease;
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.8);
+        }
+        
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Glitch Effect on Hover for Menu */
+        .nav-item {
+            position: relative;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #00ffff;
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body class="text-white selection:bg-cyan-500 selection:text-black flex items-center justify-center">
+
+    <div id="cursor-dot" class="cursor-dot hidden md:block"></div>
+
+    <div class="overlay-mesh"></div>
+
+    <main class="relative z-10 w-full h-full flex items-center justify-center p-6 md:p-12">
+        
+        <section class="relative w-full max-w-6xl aspect-video bg-black rounded-[3rem] overflow-hidden border border-white/10 hero-glow">
+            
+            <video id="hero-video" class="w-full h-full object-cover opacity-90" loop playsinline>
+                <source src="1764716684044888.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+                <button id="play-toggle" class="play-btn glass-panel w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center border border-gray-600 text-white group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-cyan-500 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                    
+                    <i id="play-icon" class="fas fa-play text-xl md:text-2xl ml-1 group-hover:text-cyan-300 transition-colors"></i>
+                </button>
+            </div>
+
+        </section>
+
+        <footer class="absolute bottom-6 right-8 text-xs text-gray-500 font-mono">
+            <span class="text-cyan-500 tracking-widest uppercase">3rd December 2025</span>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- Video Control Logic ---
+        const video = document.getElementById('hero-video');
+        const playBtn = document.getElementById('play-toggle');
+        const playIcon = document.getElementById('play-icon');
+
+        // Initial state: Pause the video (required for user interaction to enable audio)
+        video.pause(); 
+
+        playBtn.addEventListener('click', () => {
+            if (video.paused) {
+                // Play the video and switch icon to pause
+                video.play();
+                playIcon.classList.remove('fa-play', 'ml-1');
+                playIcon.classList.add('fa-pause');
+            } else {
+                // Pause the video and switch icon back to play
+                video.pause();
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play', 'ml-1'); // ml-1 centers the play triangle visually
+            }
+        });
+
+
+        // --- Rainbow Cursor Logic ---
+        const cursorDot = document.getElementById('cursor-dot');
+        let hue = 0;
+
+        // Move the main white dot and create particles on mouse movement
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            // Update main cursor position
+            cursorDot.style.left = x + 'px';
+            cursorDot.style.top = y + 'px';
+
+            // Create Rainbow Particle
+            createParticle(x, y);
+        });
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.classList.add('rainbow-particle');
+            
+            // Randomize size slightly
+            const size = Math.random() * 8 + 4; // 4px to 12px
+            
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Set Rainbow Color using HSL
+            particle.style.background = `hsl(${hue}, 100%, 50%)`;
+            particle.style.boxShadow = `0 0 10px hsl(${hue}, 100%, 50%)`;
+            
+            // Position exactly at cursor
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            
+            document.body.appendChild(particle);
+
+            // Cycle Hue
+            hue += 5; 
+            if (hue >= 360) hue = 0;
+
+            // Cleanup after animation finishes (1s matches CSS animation)
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
+
+        // --- Mobile Touch Handling (Optional visual feedback for touch) ---
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            createParticle(touch.clientX, touch.clientY);
+        });
+
+    </script>
+</body>
+</html>
